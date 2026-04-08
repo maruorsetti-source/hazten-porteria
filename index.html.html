@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propuesta Comercial – Hazten 1 · Hikvision</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --black:    #07080a;
+  --surface:  #111318;
+  --panel:    #181b21;
+  --red:      #c8111f;
+  --red-glow: rgba(200,17,31,0.18);
+  --white:    #f5f6f8;
+  --muted:    #72767f;
+  --subtle:   rgba(255,255,255,0.06);
+  --border:   rgba(255,255,255,0.07);
+}
+
+*,*::before,*::after{ margin:0; padding:0; box-sizing:border-box; }
+html,body{ width:100%; height:100%; overflow:hidden; background:var(--black); font-family:'Inter',sans-serif; color:var(--white); }
+
+/* ── DECK ── */
+.deck{ position:relative; width:100vw; height:100vh; }
+
+.slide{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  opacity:0; pointer-events:none;
+  transition: opacity .75s ease, transform .75s cubic-bezier(.22,.8,.22,1);
+  transform:translateY(18px);
+}
+.slide.active{ opacity:1; transform:translateY(0); pointer-events:all; z-index:10; }
+
+/* ── GLOBAL NAV CHROME ── */
+.chrome{
+  position:fixed; top:0; left:0; width:100%; z-index:50;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:40px 60px;
+  pointer-events:none;
+}
+.chrome-header-left { display:flex; align-items:center; gap: 24px; pointer-events:all; }
+.chrome-logo{ display:flex; align-items:center; }
+.chrome-logo img{ height:38px; object-fit:contain; }
+.chrome-divider{ width:1px; height:24px; background:rgba(255,255,255,0.15); }
+.chrome-label{ font-size:13px; font-weight:700; letter-spacing:3px; color:var(--muted); text-transform:uppercase; margin-top:2px; }
+
+.nav-actions{ display:flex; align-items:center; justify-content:flex-end; gap:20px; pointer-events:all; }
+.slide-counter{ font-size:12px; font-weight:600; color:var(--muted); letter-spacing:3px; margin-right:8px; }
+.nav-btn{
+  width:52px; height:52px; border-radius:50%;
+  border:1px solid rgba(255,255,255,0.15); background:transparent;
+  color:var(--white); font-size:22px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:.3s ease; backdrop-filter:blur(12px);
+}
+.nav-btn:hover:not(.disabled){ 
+  background:rgba(255,255,255,0.1); color:var(--white); 
+  border-color: rgba(255,255,255,0.5);
+}
+.nav-btn.disabled{ opacity:.15; pointer-events:none; }
+
+/* ════════════════════════════════
+   SLIDE 1 – HERO
+════════════════════════════════ */
+.s1{
+  flex-direction:row;
+  align-items:stretch;
+}
+
+/* Left text panel */
+.s1-left{
+  flex:0 0 50%;
+  display:flex; flex-direction:column; justify-content:center; align-items:flex-start;
+  padding: 120px 6% 40px;
+  position:relative; z-index:2;
+}
+
+.eyebrow{
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:12px; font-weight:800; letter-spacing:3px; text-transform:uppercase;
+  color:var(--red); margin-top:2px;
+}
+.eyebrow-dot{ width:6px; height:6px; background:var(--red); border-radius:50%; }
+
+.s1-title{
+  font-size:4.8vw; font-weight:800;
+  line-height:1.05; letter-spacing:-2px;
+  color:var(--white);
+  margin-bottom:20px;
+}
+.s1-subtitle{
+  font-size:1.6rem; font-weight:700;
+  color:var(--red); margin-bottom:48px;
+}
+.s1-body{
+  font-size:1.25rem; font-weight:400;
+  color:var(--white); line-height:1.7; max-width:92%;
+  margin-bottom:24px;
+}
+.s1-body strong{ color:var(--white); font-weight:700; }
+
+/* Stats panel on right image */
+.s1-stats-glass{
+  position: absolute; bottom: 8vh; left: -8vw; z-index:10;
+  display:flex; flex-direction:column; gap:40px;
+  background:rgba(12, 14, 18, 0.85);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:16px; padding:48px 56px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+  width: 26vw; min-width: 440px;
+}
+.s1-stat{ display: flex; align-items: flex-start; gap: 20px; }
+.s1-stat-num{ font-size:4rem; font-weight:800; color:var(--white); line-height:0.8; letter-spacing:-2px; display:inline-block; }
+.s1-stat-label{ font-size:1.2rem; font-weight:700; color:var(--white); line-height:1.4; margin-top:4px; display:block; }
+.s1-stat-label-sub{ display: block; color:var(--muted); font-weight: 500; font-size:0.95rem; margin-top: 8px; letter-spacing: 0.5px; }
+
+/* Right image panel */
+.s1-right{
+  flex:0 0 50%;
+  position:relative;
+}
+.s1-right-backdrop{
+  position:absolute; inset:0; overflow:hidden;
+}
+.s1-img{
+  position:absolute; inset:0;
+  background-image:url('edificio.jpg');
+  background-size:cover;
+  background-position:center top;
+  transform:scale(1.04);
+  transition:transform 14s ease;
+}
+.slide.active .s1-img{ transform:scale(1); }
+
+/* Seamless left-to-right gradient blend */
+.s1-blend{
+  position:absolute; inset:0;
+  background:
+    linear-gradient(90deg, var(--black) 0%, rgba(7,8,10,.6) 30%, transparent 60%),
+    linear-gradient(180deg, rgba(7,8,10,.5) 0%, transparent 20%, transparent 80%, var(--black) 100%);
+  z-index:1;
+}
+
+/* Red accent edge line */
+.s1-right::after{
+  content:''; position:absolute; top:10%; right:0; width:2px; height:0;
+  background:linear-gradient(180deg, transparent, var(--red), transparent);
+  z-index:2;
+  transition:height 1.2s .3s ease;
+}
+.slide.active .s1-right::after{ height:80%; }
+
+/* ════════════════════════════════
+   SLIDE 2 – COMPARISON
+════════════════════════════════ */
+.s2{
+  justify-content:center; align-items:center;
+  padding:140px 64px 80px;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 0%, rgba(200,17,31,.05) 0%, transparent 70%),
+    var(--black);
+}
+.s2-inner{ width:100%; max-width:1080px; }
+.s2-heading{ text-align:center; margin-bottom:6px; }
+.s2-heading h2{ font-size:2.1rem; font-weight:700; letter-spacing:-0.5px; }
+.s2-sub{ text-align:center; font-size:.95rem; color:var(--muted); margin-bottom:32px; }
+
+.s2-grid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+
+.card{
+  border:1px solid var(--border);
+  border-radius:14px; overflow:hidden;
+  display:flex; flex-direction:column;
+  transition:border-color .3s;
+}
+.card-header{ padding:24px 28px 0; display:flex; justify-content:space-between; align-items:flex-start; }
+.card-tag{
+  font-size:9.5px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+  padding:5px 10px; border-radius:20px; background:var(--subtle); color:var(--muted);
+  margin-bottom:14px;
+}
+.card-title-text{ font-size:1.35rem; font-weight:700; color:var(--white); margin-bottom:4px; }
+.card-subtitle-text{ font-size:.85rem; color:var(--muted); }
+
+.card-img-wrap{ display:flex; align-items:center; gap:10px; }
+.card-img-wrap img{ height:68px; object-fit:contain; filter:drop-shadow(0 4px 12px rgba(0,0,0,.6)); }
+.card-plus{ font-size:20px; color:var(--muted); }
+
+.card-body{ padding:20px 28px 28px; flex:1; display:flex; flex-direction:column; }
+.card-ul{ list-style:none; margin-top:4px; }
+.card-ul li{
+  position:relative; padding-left:22px;
+  margin-bottom:11px; font-size:.95rem;
+  color:#b0b3bb; line-height:1.45;
+}
+.card-ul li::before{ position:absolute; left:0; top:1px; font-size:.85rem; }
+.card-bad  ul li::before, .card-bad .card-ul li::before{ content:'✕'; color:#555; }
+.card-good ul li::before, .card-good .card-ul li::before{ content:'✓'; color:var(--red); font-weight:700; }
+
+/* dim / highlight cards */
+.card-bad{
+  background:var(--panel);
+  opacity:.75;
+}
+.card-good{
+  background:linear-gradient(160deg, #181b21 0%, rgba(200,17,31,.07) 100%);
+  border-color:rgba(200,17,31,.3);
+  box-shadow:0 0 40px rgba(200,17,31,.06);
+  opacity:1;
+}
+.card-good .card-title-text{ color:var(--white); }
+
+.s2-quote{
+  margin-top:24px; text-align:center;
+}
+.s2-quote blockquote{
+  display:inline-block; font-size:1.05rem; font-weight:500;
+  color:#d8dae0; font-style:italic;
+  padding:14px 28px;
+  border-left:3px solid var(--red);
+  background:var(--panel);
+  border-radius:0 8px 8px 0;
+  text-align:left;
+}
+
+/* ════════════════════════════════
+   SLIDE 3 – RECOMMENDATION
+════════════════════════════════ */
+.s3{
+  justify-content:center; align-items:center;
+  padding:140px 64px 80px;
+  background:
+    radial-gradient(ellipse 50% 50% at 50% 100%, rgba(200,17,31,.07) 0%, transparent 70%),
+    var(--black);
+}
+.s3-inner{ width:100%; max-width:960px; text-align:center; }
+.s3-eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase;
+  color:var(--red); margin-bottom:16px;
+}
+.s3-eyebrow-dot{ width:5px; height:5px; border-radius:50%; background:var(--red); }
+.s3-title{ font-size:2.5rem; font-weight:800; letter-spacing:-1px; margin-bottom:12px; }
+.s3-body{ font-size:1rem; color:var(--muted); max-width:680px; margin:0 auto 40px; line-height:1.6; }
+.s3-body strong{ color:var(--white); }
+
+.s3-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; text-align:left; }
+.s3-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:12px; padding:28px 24px;
+  position:relative; overflow:hidden;
+  transition:border-color .3s, transform .25s;
+}
+.s3-card:hover{ border-color:rgba(200,17,31,.35); transform:translateY(-3px); }
+.s3-card::before{
+  content:''; position:absolute;
+  top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, transparent, var(--red), transparent);
+  opacity:0; transition:opacity .3s;
+}
+.s3-card:hover::before{ opacity:1; }
+.s3-icon{ font-size:1.4rem; margin-bottom:14px; }
+.s3-card h4{ font-size:1.05rem; font-weight:700; color:var(--white); margin-bottom:8px; }
+.s3-card p{ font-size:.9rem; color:var(--muted); line-height:1.55; }
+
+.s3-closing{
+  margin-top:42px;
+  font-size:1.2rem; font-weight:600; color:var(--white);
+  border-top:1px solid var(--border); padding-top:32px;
+  line-height:1.4;
+}
+.s3-closing em{ color:var(--red); font-style:normal; }
+
+</style>
+</head>
+<body>
+
+<!-- ── GLOBAL CHROME ── -->
+<div class="chrome">
+  <div class="chrome-header-left">
+    <div class="chrome-logo">
+      <img src="logo.png" alt="Hikvision">
+    </div>
+    <div class="chrome-divider"></div>
+    <span class="chrome-label">Propuesta Comercial</span>
+    <div style="width:4px; height:4px; border-radius:50%; background:var(--muted); opacity:0.5; margin:0 4px;"></div>
+    <div class="eyebrow"><span class="eyebrow-dot"></span>Proyecto habitacional</div>
+  </div>
+
+  <div class="nav-actions">
+    <span class="slide-counter">0<span id="current">1</span> / 03</span>
+    <button class="nav-btn disabled" id="prevBtn">←</button>
+    <button class="nav-btn" id="nextBtn">→</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     DECK
+══════════════════════════════════ -->
+<div class="deck">
+
+  <!-- ▸ SLIDE 1 ─ HERO -->
+  <div class="slide s1 active" id="s0">
+    <div class="s1-left">
+      <h1 class="s1-title">Consorcio<br>Hazten&nbsp;1</h1>
+      <p class="s1-subtitle">El Verdadero Desafío</p>
+      <p class="s1-body">Al contar con un proyecto diseñado para distintos usos de las unidades, la prioridad es incorporar tecnología que garantice <strong>confiabilidad absoluta a largo plazo.</strong></p>
+      <p class="s1-body" style="margin-top:12px;">El objetivo central es jerarquizar la propiedad y entregar una solución que minimice reclamos y soporte futuro, independientemente de quién habite la unidad.</p>
+
+    </div>
+
+    <div class="s1-right">
+      <div class="s1-right-backdrop">
+        <div class="s1-img"></div>
+        <div class="s1-blend"></div>
+      </div>
+      
+      <div class="s1-stats-glass">
+        <div class="s1-stat">
+          <span class="s1-stat-num">42</span>
+          <span class="s1-stat-label">— Departamentos</span>
+        </div>
+        <div class="s1-stat">
+          <span class="s1-stat-num">3</span>
+          <span class="s1-stat-label">— Usos posibles:<br><span class="s1-stat-label-sub">Propio · Alquiler · Temporal</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▸ SLIDE 2 ─ COMPARISON -->
+  <div class="slide s2" id="s1">
+    <div class="s2-inner">
+      <div class="s2-heading"><h2>Dos Formas de Equipar el Edificio</h2></div>
+      <p class="s2-sub">Ambas opciones tienen App, pero la experiencia diaria es muy distinta.</p>
+
+      <div class="s2-grid">
+
+        <!-- Option 1 -->
+        <div class="card card-bad">
+          <div class="card-header">
+            <div>
+              <div class="card-tag">IP + App Móvil</div>
+              <div class="card-title-text">Opción 1: Solo Celular</div>
+              <div class="card-subtitle-text">Frente de calle + App Móvil</div>
+            </div>
+            <div class="card-img-wrap">
+              <img src="frente2.png?v=2" alt="Frente de calle" style="opacity:.85;">
+            </div>
+          </div>
+          <div class="card-body">
+            <ul class="card-ul">
+              <li>Delega la operatividad del sistema al dispositivo personal del usuario (depende de su batería, red y configuración).</li>
+              <li>Requiere gestión constante de accesos y aplicaciones para cada nuevo ocupante o ingreso rotativo.</li>
+              <li>Ante el cambio de celular o pérdida de acceso del residente, se generan requerimientos de soporte hacia el Consorcio.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Option 2 -->
+        <div class="card card-good">
+          <div class="card-header">
+            <div>
+              <div class="card-tag">IP + Monitor Fijo + App Móvil</div>
+              <div class="card-title-text">Opción 2: Pantalla Fija</div>
+              <div class="card-subtitle-text">Frente de calle + Monitor Fijo + App Móvil</div>
+            </div>
+            <div class="card-img-wrap">
+              <img src="frente.png" alt="Frente" style="height:55px;">
+              <span class="card-plus">+</span>
+              <img src="monitor.png" alt="Monitor interior" style="height:68px;">
+            </div>
+          </div>
+          <div class="card-body">
+            <ul class="card-ul">
+              <li>Cada unidad funcional se entrega con su hardware fijo en la pared: <strong>conectividad y funcionamiento garantizados 24/7.</strong></li>
+              <li>Cero fricción de uso. Cualquier usuario final comprende su uso intuitivo de inmediato sin necesidad de complejas configuraciones.</li>
+              <li>Conserva el valor de la App móvil, que <strong>se ofrece como un beneficio premium adicional</strong>, sin depender exclusivamente de ella.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="s2-quote">
+        <blockquote>"La app es una útil herramienta, pero no debería ser el único medio de uso."</blockquote>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▸ SLIDE 3 ─ RECOMMENDATION -->
+  <div class="slide s3" id="s2">
+    <div class="s3-inner">
+      <div class="s3-eyebrow"><span class="s3-eyebrow-dot"></span>La Recomendación</div>
+      <h2 class="s3-title">Invertir en Tranquilidad</h2>
+      <p class="s3-body">Sugerimos la implementación de la <strong>Opción 2</strong> (Monitor Fijo en unidad). Es la decisión más sólida para consolidar el valor del proyecto inmobiliario a largo plazo.</p>
+
+      <div class="s3-grid">
+        <div class="s3-card">
+          <div class="s3-icon">🔒</div>
+          <h4>Entrega de Nivel Superior</h4>
+          <p>Un estándar sólido desde el momento cero, elevando la percepción de calidad del comprador al recibir su inmueble listo para usarse.</p>
+        </div>
+        <div class="s3-card">
+          <div class="s3-icon">⚙️</div>
+          <h4>Confiabilidad Continua</h4>
+          <p>Estandarizar el punto de control interno aísla al edificio de futuros reclamos de soporte por problemas de red celular o dispositivos ajenos.</p>
+        </div>
+        <div class="s3-card">
+          <div class="s3-icon">🏢</div>
+          <h4>Adaptabilidad Absoluta</h4>
+          <p>Una infraestructura infalible que protege el prestigio de la propiedad, rindiendo de forma impecable en usos propios, alquileres y estancias breves.</p>
+        </div>
+      </div>
+
+      <div class="s3-closing">
+        Un edificio premium merece tecnología que solucione problemas, <em>no que los cree.</em>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let cur = 0;
+  const slides = document.querySelectorAll('.slide');
+  const prev = document.getElementById('prevBtn');
+  const next = document.getElementById('nextBtn');
+  const counter = document.getElementById('current');
+
+  function go(n) {
+    if (n < 0 || n >= slides.length) return;
+    slides[cur].classList.remove('active');
+    cur = n;
+    slides[cur].classList.add('active');
+    counter.textContent = cur + 1;
+    prev.classList.toggle('disabled', cur === 0);
+    next.classList.toggle('disabled', cur === slides.length - 1);
+  }
+
+  prev.addEventListener('click', () => go(cur - 1));
+  next.addEventListener('click', () => go(cur + 1));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') go(cur + 1);
+    if (e.key === 'ArrowLeft') go(cur - 1);
+  });
+</script>
+</body>
+</html>
